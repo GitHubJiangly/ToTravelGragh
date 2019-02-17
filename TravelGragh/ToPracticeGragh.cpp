@@ -61,7 +61,7 @@ bool ToPracticeGragh::TravelVertex(char vertex)
 	return true;
 }
 
-void ToPracticeGragh::TravelVertexByQueue(char vertex, queue<char>& qVers)
+void ToPracticeGragh::TravelVertexAndPushToQueue(char vertex, queue<char>& qVers)
 {
 	if (TravelVertex(vertex))
 	{
@@ -69,7 +69,7 @@ void ToPracticeGragh::TravelVertexByQueue(char vertex, queue<char>& qVers)
 	}
 }
 
-void ToPracticeGragh::TravelVertexByStack(char vertex, stack<char>& sVers)
+void ToPracticeGragh::TravelVertexAndPushToStack(char vertex, stack<char>& sVers)
 {
 	if (TravelVertex(vertex))
 	{
@@ -90,13 +90,13 @@ void ToPracticeGragh::DFS(char ver)
 void ToPracticeGragh::DFSByStack(char ver)
 {
 	stack<char> sVers;
-	TravelVertexByStack(ver, sVers);
+	TravelVertexAndPushToStack(ver, sVers);
 	while (sVers.size() > 0)
 	{
 		char adjV;
 		if (GetAdjUnVisitedVer(sVers.top(), adjV))
 		{
-			TravelVertexByStack(adjV, sVers);
+			TravelVertexAndPushToStack(adjV, sVers);
 		}
 		else
 		{
@@ -108,14 +108,14 @@ void ToPracticeGragh::DFSByStack(char ver)
 void ToPracticeGragh::BFS(char ver)
 {
 	queue<char> qVers;
-	TravelVertexByQueue(ver, qVers);
+	TravelVertexAndPushToQueue(ver, qVers);
 	while (qVers.size() > 0)
 	{
 		for each (char adjV in GetAdjUnVisitedVers(qVers.front()))
 		{
-			TravelVertexByQueue(adjV, qVers);
+			TravelVertexAndPushToQueue(adjV, qVers);
 		}
-	  qVers.pop();
+		qVers.pop();
 	}
 }
 

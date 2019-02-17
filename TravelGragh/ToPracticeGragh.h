@@ -34,8 +34,8 @@ public:
 	~ToPracticeGragh();
 	void AddEdges(char vertex, list<char> adjVerList);
 	bool TravelVertex(char vertex);
-	void TravelVertexByQueue(char vertex, queue<char>& qVers);
-	void TravelVertexByStack(char vertex, stack<char>& sVers);
+	void TravelVertexAndPushToQueue(char vertex, queue<char>& qVers);
+	void TravelVertexAndPushToStack(char vertex, stack<char>& sVers);
 	void DFS(char ver);
 	void DFSByStack(char ver);
 	void BFS(char ver);
