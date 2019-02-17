@@ -46,5 +46,8 @@ public:
 	void PrintGragh();
 private:
 	map<char, VNode*> _VertexList;
+	vector<vector<char>> _DFSTravelPaths;
+	vector<vector<char>> _BFSTravelPaths;
+	vector<char> _CurrentTravelPath;
 };
 

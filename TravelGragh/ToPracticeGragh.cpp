@@ -56,6 +56,7 @@ bool ToPracticeGragh::TravelVertex(char vertex)
 		return false;
 	}
 	cout << vertex << " ";
+	_CurrentTravelPath.push_back(vertex);
 	_VertexList[vertex]->Traveled = true;
 
 	return true;
@@ -124,10 +125,12 @@ void ToPracticeGragh::TravelGragh(TravelType travelType)
 	if (travelType == TravelType::DFS)
 	{
 		cout << endl << endl << "DFS: " << endl;
+		_DFSTravelPaths.clear();
 	}	
 	else if (travelType == TravelType::BFS)
 	{
 		cout << endl << endl << "BFS: " << endl;
+		_BFSTravelPaths.clear();
 	}
 
 	map<char, VNode*>::iterator it = _VertexList.begin();
@@ -137,12 +140,22 @@ void ToPracticeGragh::TravelGragh(TravelType travelType)
 		{
 			if (travelType == TravelType::DFS)
 			{
+				_CurrentTravelPath.clear();
 				DFSByStack(it->first);
 				//DFS(it->first);
+				if (_CurrentTravelPath.size() > 0)
+				{
+					_DFSTravelPaths.push_back(_CurrentTravelPath);
+				}
 			}
 			else if (travelType == TravelType::BFS)
 			{
+				_CurrentTravelPath.clear();
 				BFS(it->first);
+				if (_CurrentTravelPath.size() > 0)
+				{
+					_BFSTravelPaths.push_back(_CurrentTravelPath);
+				}
 			}
 		}
 	
