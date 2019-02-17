@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <list>
+#include <stack>
 using namespace std;
 
 struct ENode
@@ -33,11 +34,14 @@ public:
 	~ToPracticeGragh();
 	void AddEdges(char vertex, list<char> adjVerList);
 	bool TravelVertex(char vertex);
-	void TravelVertex(char vertex, queue<char>& qVers);
+	void TravelVertexByQueue(char vertex, queue<char>& qVers);
+	void TravelVertexByStack(char vertex, stack<char>& sVers);
 	void DFS(char ver);
+	void DFSByStack(char ver);
 	void BFS(char ver);
 	void TravelGragh(TravelType travelType);
 	vector<char> GetAdjUnVisitedVers(char ver);
+	bool GetAdjUnVisitedVer(char ver, char& adjVer);
 	void InitGragh();
 	void PrintGragh();
 private:

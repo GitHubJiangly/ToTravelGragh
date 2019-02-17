@@ -19,7 +19,7 @@ ToPracticeGragh::~ToPracticeGragh()
 		{
 			curN = eN;
 			eN = eN->Next;
-			delete eN;
+			delete curN;
 		}
 		delete it->second;
 		it++;
@@ -61,7 +61,7 @@ bool ToPracticeGragh::TravelVertex(char vertex)
 	return true;
 }
 
-void ToPracticeGragh::TravelVertex(char vertex, queue<char>& qVers)
+void ToPracticeGragh::TravelVertexByQueue(char vertex, queue<char>& qVers)
 {
 	if (TravelVertex(vertex))
 	{
@@ -69,25 +69,51 @@ void ToPracticeGragh::TravelVertex(char vertex, queue<char>& qVers)
 	}
 }
 
+void ToPracticeGragh::TravelVertexByStack(char vertex, stack<char>& sVers)
+{
+	if (TravelVertex(vertex))
+	{
+		sVers.push(vertex);
+	}
+}
+
 void ToPracticeGragh::DFS(char ver)
 {
 	TravelVertex(ver);
-	vector<char> adjVers = GetAdjUnVisitedVers(ver);
-	for each (char adjV in adjVers)
+	char adjV;
+	if (GetAdjUnVisitedVer(ver, adjV))
 	{
 		DFS(adjV);
+	}
+}
+
+void ToPracticeGragh::DFSByStack(char ver)
+{
+	stack<char> sVers;
+	TravelVertexByStack(ver, sVers);
+	while (sVers.size() > 0)
+	{
+		char adjV;
+		if (GetAdjUnVisitedVer(sVers.top(), adjV))
+		{
+			TravelVertexByStack(adjV, sVers);
+		}
+		else
+		{
+			sVers.pop();
+		}
 	}
 }
 
 void ToPracticeGragh::BFS(char ver)
 {
 	queue<char> qVers;
-	TravelVertex(ver, qVers);
+	TravelVertexByQueue(ver, qVers);
 	while (qVers.size() > 0)
 	{
 		for each (char adjV in GetAdjUnVisitedVers(qVers.front()))
 		{
-			TravelVertex(adjV, qVers);
+			TravelVertexByQueue(adjV, qVers);
 		}
 	  qVers.pop();
 	}
@@ -111,7 +137,8 @@ void ToPracticeGragh::TravelGragh(TravelType travelType)
 		{
 			if (travelType == TravelType::DFS)
 			{
-				DFS(it->first);
+				DFSByStack(it->first);
+				//DFS(it->first);
 			}
 			else if (travelType == TravelType::BFS)
 			{
@@ -145,6 +172,22 @@ vector<char> ToPracticeGragh::GetAdjUnVisitedVers(char ver)
 	}
 
 	return retData;
+}
+
+bool ToPracticeGragh::GetAdjUnVisitedVer(char ver, char& adjVer)
+{
+	ENode* curN = _VertexList[ver]->firstNode;
+	while (curN)
+	{
+		if (!_VertexList[curN->Vertex]->Traveled)
+		{
+			adjVer = curN->Vertex;
+			return true;
+		}
+		curN = curN->Next;
+	}
+
+	return false;
 }
 
 void ToPracticeGragh::InitGragh()
