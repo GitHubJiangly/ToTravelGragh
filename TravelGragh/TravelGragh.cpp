@@ -75,6 +75,7 @@ void main()
 	gragh.PrintGragh();
 	gragh.TravelGragh(TravelType::BFS);
 	gragh.TravelGragh(TravelType::DFS);
+	bool bContainCircle = gragh.JudgeContainCircle();
 }
 
 

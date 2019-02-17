@@ -6,6 +6,7 @@
 ToPracticeGragh::ToPracticeGragh()
 {
 	InitGragh();
+	_ContainCircle = false;
 }
 
 ToPracticeGragh::~ToPracticeGragh()
@@ -55,7 +56,7 @@ bool ToPracticeGragh::TravelVertex(char vertex)
 	{
 		return false;
 	}
-	cout << vertex << " ";
+	//cout << vertex << " ";
 	_CurrentTravelPath.push_back(vertex);
 	_VertexList[vertex]->Traveled = true;
 
@@ -86,6 +87,24 @@ void ToPracticeGragh::DFS(char ver)
 	{
 		DFS(adjV);
 	}
+}
+
+void ToPracticeGragh::ToJudgeCircleByDFS(char ver, int parentVer)
+{
+	TravelVertex(ver);
+	vector<char> adjVers = GetAdjVers(ver);
+	for each (char adjV in adjVers)
+	{
+		if (!_VertexList[adjV]->Traveled)
+		{
+			ToJudgeCircleByDFS(adjV, ver);
+		}
+		else if (adjV != parentVer) // adjV、parentVer已经被遍历过， 它们同属ver先前节点，则形成环
+		{
+			_ContainCircle = true;
+			return;
+		}
+	}		
 }
 
 void ToPracticeGragh::DFSByStack(char ver)
@@ -120,16 +139,38 @@ void ToPracticeGragh::BFS(char ver)
 	}
 }
 
+bool ToPracticeGragh::JudgeContainCircle()
+{
+	_ContainCircle = false;
+	map<char, VNode*>::iterator it = _VertexList.begin();
+	while (it != _VertexList.end())
+	{
+		if (!it->second->Traveled)
+		{
+			ToJudgeCircleByDFS(it->first, it->first);
+		}
+
+		it++;
+	}
+
+	it = _VertexList.begin();
+	while (it != _VertexList.end())
+	{
+		it->second->Traveled = false;
+		it++;
+	}
+
+	return _ContainCircle;
+}
+
 void ToPracticeGragh::TravelGragh(TravelType travelType)
 {
 	if (travelType == TravelType::DFS)
 	{
-		cout << endl << endl << "DFS: " << endl;
 		_DFSTravelPaths.clear();
 	}	
 	else if (travelType == TravelType::BFS)
 	{
-		cout << endl << endl << "BFS: " << endl;
 		_BFSTravelPaths.clear();
 	}
 
@@ -162,6 +203,37 @@ void ToPracticeGragh::TravelGragh(TravelType travelType)
 		it++;
 	}
 
+
+	if (travelType == TravelType::DFS)
+	{
+		cout << "DFS: " << endl;
+		int iPath = 0;
+		for each (vector<char> path in _DFSTravelPaths)
+		{
+			cout << "Path " << ++iPath << " :" << endl;
+			for each (char ver in path)
+			{
+				cout << ver << " ";
+			}
+			cout << endl;
+		}
+	}
+	else if (travelType == TravelType::BFS)
+	{
+		cout << endl  << "BFS: " << endl;
+		int iPath = 0;
+		for each (vector<char> path in _BFSTravelPaths)
+		{
+			cout << "Path " << ++iPath << " :" << endl;
+			for each (char ver in path)
+			{
+				cout << ver << " ";
+			}
+			cout << endl;
+		}
+	}
+
+
 	it = _VertexList.begin();
 	while (it != _VertexList.end())
 	{
@@ -181,6 +253,19 @@ vector<char> ToPracticeGragh::GetAdjUnVisitedVers(char ver)
 		{
 			retData.push_back(curN->Vertex);
 		}
+		curN = curN->Next;
+	}
+
+	return retData;
+}
+
+vector<char> ToPracticeGragh::GetAdjVers(char ver)
+{
+	vector<char> retData;
+	ENode* curN = _VertexList[ver]->firstNode;
+	while (curN)
+	{
+  	retData.push_back(curN->Vertex);
 		curN = curN->Next;
 	}
 

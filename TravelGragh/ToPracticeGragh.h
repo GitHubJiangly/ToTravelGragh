@@ -32,22 +32,31 @@ class ToPracticeGragh
 public:
 	ToPracticeGragh();
 	~ToPracticeGragh();
+	void TravelGragh(TravelType travelType);
+	void PrintGragh();
+	bool JudgeContainCircle();
+private:
+	void InitGragh();
 	void AddEdges(char vertex, list<char> adjVerList);
+
 	bool TravelVertex(char vertex);
 	void TravelVertexAndPushToQueue(char vertex, queue<char>& qVers);
 	void TravelVertexAndPushToStack(char vertex, stack<char>& sVers);
+
+	vector<char> GetAdjUnVisitedVers(char ver);
+	vector<char> GetAdjVers(char ver);
+	bool GetAdjUnVisitedVer(char ver, char& adjVer);
+
 	void DFS(char ver);
+	void ToJudgeCircleByDFS(char ver, int parentVer);
 	void DFSByStack(char ver);
 	void BFS(char ver);
-	void TravelGragh(TravelType travelType);
-	vector<char> GetAdjUnVisitedVers(char ver);
-	bool GetAdjUnVisitedVer(char ver, char& adjVer);
-	void InitGragh();
-	void PrintGragh();
+
 private:
 	map<char, VNode*> _VertexList;
 	vector<vector<char>> _DFSTravelPaths;
 	vector<vector<char>> _BFSTravelPaths;
 	vector<char> _CurrentTravelPath;
+	bool _ContainCircle;
 };
 
