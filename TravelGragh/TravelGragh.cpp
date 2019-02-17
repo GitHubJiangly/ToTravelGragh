@@ -2,11 +2,16 @@
 //
 
 #include "stdafx.h"
-#include "MatrixGragh.h"
-#include "AdiListGragh.h"
 #include <iostream>
 using namespace std;
 
+#include "MatrixGragh.h"
+#include "AdiListGragh.h"
+#include "ToPracticeGragh.h"
+
+
+
+#if 0
 void InitMatrixGragh(MatrixGragh &g)
 {
 	g.addVertex('A');
@@ -34,7 +39,6 @@ void InitAdiListGragh(AdiListGragh &g)
 	g.addEdge('D', list<char>{'A', 'E'});
 	g.addEdge('E', list<char>{'B', 'C', 'D'});
 }
-
 int main()
 {
 	// test MatrixGragh
@@ -48,7 +52,6 @@ int main()
 	g.BFS();
 
 
-
 	// test AdiListGragh
 	cout << endl << endl << endl;
 
@@ -57,10 +60,22 @@ int main()
 	InitAdiListGragh(adjListGragh);
 	adjListGragh.PrintAdiListGragh();
 	cout << "DFS:" << endl;
-	adjListGragh.DFS();
+	adjListGragh.TravelGraghByDFS2();
 	cout << "BFS:" << endl;
-	adjListGragh.BFS();
+	adjListGragh.TravelGraghByBFS2();
 
 
 	return 0;
 }
+#endif
+
+void main()
+{
+	ToPracticeGragh gragh;
+	gragh.PrintGragh();
+	gragh.TravelGragh(TravelType::BFS);
+	gragh.TravelGragh(TravelType::DFS);
+}
+
+
+
