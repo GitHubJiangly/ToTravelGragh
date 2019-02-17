@@ -35,6 +35,7 @@ public:
 	void TravelGragh(TravelType travelType);
 	void PrintGragh();
 	bool JudgeContainCircle();
+	bool JudgeBinaryGragh();
 private:
 	void InitGragh();
 	void AddEdges(char vertex, list<char> adjVerList);
@@ -49,6 +50,7 @@ private:
 
 	void DFS(char ver);
 	void ToJudgeCircleByDFS(char ver, int parentVer);
+	void ToJudgeBinaryGragh(char ver);
 	void DFSByStack(char ver);
 	void BFS(char ver);
 
@@ -58,5 +60,8 @@ private:
 	vector<vector<char>> _BFSTravelPaths;
 	vector<char> _CurrentTravelPath;
 	bool _ContainCircle;
+	map<char, bool> _BinaryColor;
+	bool _BinaryGragh;
+	vector<bool> _BinaryGraghPath;
 };
 

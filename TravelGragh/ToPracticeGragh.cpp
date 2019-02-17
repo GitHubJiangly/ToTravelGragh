@@ -107,6 +107,29 @@ void ToPracticeGragh::ToJudgeCircleByDFS(char ver, int parentVer)
 	}		
 }
 
+void ToPracticeGragh::ToJudgeBinaryGragh(char ver)
+{
+	TravelVertex(ver);
+	if (_BinaryColor.find(ver) == _BinaryColor.end())
+	{
+		_BinaryColor[ver] = true;
+	}
+	vector<char> adjVers = GetAdjVers(ver);
+	for each (char adjV in adjVers)
+	{
+		if (!_VertexList[adjV]->Traveled)
+		{
+			_BinaryColor[adjV] = !_BinaryColor[ver];
+			ToJudgeBinaryGragh(adjV);
+		}
+		else if (_BinaryColor[adjV] == _BinaryColor[ver]) // 相邻节点的颜色相同，一定不是二分图
+		{
+			_BinaryGragh = false;
+			return;
+		}
+	}
+}
+
 void ToPracticeGragh::DFSByStack(char ver)
 {
 	stack<char> sVers;
@@ -161,6 +184,39 @@ bool ToPracticeGragh::JudgeContainCircle()
 	}
 
 	return _ContainCircle;
+}
+
+bool ToPracticeGragh::JudgeBinaryGragh()
+{
+	_BinaryGraghPath.clear();
+	map<char, VNode*>::iterator it = _VertexList.begin();
+	while (it != _VertexList.end())
+	{
+		if (!it->second->Traveled)
+		{
+			_BinaryGragh = true;
+		  ToJudgeBinaryGragh(it->first);
+			_BinaryGraghPath.push_back(_BinaryGragh);
+		}
+
+		it++;
+	}
+
+	it = _VertexList.begin();
+	while (it != _VertexList.end())
+	{
+		it->second->Traveled = false;
+		it++;
+	}
+
+	for each (bool isBinaryGragh in _BinaryGraghPath)
+	{
+		if (isBinaryGragh)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void ToPracticeGragh::TravelGragh(TravelType travelType)
@@ -290,17 +346,12 @@ bool ToPracticeGragh::GetAdjUnVisitedVer(char ver, char& adjVer)
 
 void ToPracticeGragh::InitGragh()
 {
-	AddEdges('A', list<char>{'B', 'D'});
-	AddEdges('B', list<char>{'A', 'E'});
-	AddEdges('C', list<char>{'E'});
-	AddEdges('D', list<char>{'A', 'E'});
-	AddEdges('E', list<char>{'B', 'C', 'D'});
+	AddEdges('A', list<char>{'B'});
+	AddEdges('B', list<char>{'A'});
 
-	AddEdges('a', list<char>{'b', 'd'});
-	AddEdges('b', list<char>{'a', 'e'});
-	AddEdges('c', list<char>{'e'});
-	AddEdges('d', list<char>{'a', 'e'});
-	AddEdges('e', list<char>{'b', 'c', 'd'});
+	AddEdges('a', list<char>{'b'});
+	AddEdges('b', list<char>{'c'});
+	AddEdges('c', list<char>{'a'});
 }
 
 void ToPracticeGragh::PrintGragh()

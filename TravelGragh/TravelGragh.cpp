@@ -76,6 +76,7 @@ void main()
 	gragh.TravelGragh(TravelType::BFS);
 	gragh.TravelGragh(TravelType::DFS);
 	bool bContainCircle = gragh.JudgeContainCircle();
+	bool _BinaryGraghPath = gragh.JudgeBinaryGragh();
 }
 
 
