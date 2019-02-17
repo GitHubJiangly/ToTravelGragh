@@ -346,12 +346,17 @@ bool ToPracticeGragh::GetAdjUnVisitedVer(char ver, char& adjVer)
 
 void ToPracticeGragh::InitGragh()
 {
-	AddEdges('A', list<char>{'B'});
-	AddEdges('B', list<char>{'A'});
+	AddEdges('A', list<char>{'B', 'D'});
+	AddEdges('B', list<char>{'A', 'E'});
+	AddEdges('C', list<char>{'E'});
+	AddEdges('D', list<char>{'A', 'E'});
+	AddEdges('E', list<char>{'B', 'C', 'D'});
 
-	AddEdges('a', list<char>{'b'});
-	AddEdges('b', list<char>{'c'});
-	AddEdges('c', list<char>{'a'});
+	AddEdges('a', list<char>{'b', 'd'});
+	AddEdges('b', list<char>{'a', 'e'});
+	AddEdges('c', list<char>{'e'});
+	AddEdges('d', list<char>{'a', 'e'});
+	AddEdges('e', list<char>{'b', 'c', 'd'});
 }
 
 void ToPracticeGragh::PrintGragh()
